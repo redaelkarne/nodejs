@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Server (Dev)",
+      "type": "shell",
+      "command": "npm run dev",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "isBackground": true
+    },
+    {
+      "label": "Start Server (Production)",
+      "type": "shell",
+      "command": "npm start",
+      "problemMatcher": [],
+      "group": "build",
+      "isBackground": true
+    }
+  ]
+}
