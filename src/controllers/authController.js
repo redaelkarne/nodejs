@@ -16,13 +16,23 @@ const generateToken = (userId) => {
 // Register a new user
 exports.register = async (req, res) => {
   try {
+    console.log('Registration attempt:', {
+      body: req.body,
+      headers: req.headers['content-type']
+    });
+
     // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      console.log('Validation errors:', errors.array());
+      return res.status(400).json({ 
+        message: 'Validation failed',
+        errors: errors.array() 
+      });
     }
 
     const { email, password, firstName, lastName, department } = req.body;
+    console.log('Extracted data:', { email, firstName, lastName, department, passwordLength: password?.length });
 
     // Check if user already exists
     let user = await User.findOne({ email });
@@ -42,8 +52,13 @@ exports.register = async (req, res) => {
     // Save the user to database
     await user.save();
 
-    // Send welcome email
-    await emailSender.sendWelcomeEmail(user);
+    // Try to send welcome email (non-blocking)
+    try {
+      await emailSender.sendWelcomeEmail(user);
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError.message);
+      // Don't fail registration if email fails
+    }
 
     // Generate JWT token
     const token = generateToken(user._id);
@@ -61,7 +76,21 @@ exports.register = async (req, res) => {
     });
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(500).json({ message: 'Server error during registration' });
+    
+    // Check for specific MongoDB errors
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'User already exists with this email' });
+    }
+    
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({ message: messages.join(', ') });
+    }
+    
+    res.status(500).json({ 
+      message: 'Server error during registration',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
+    });
   }
 };
 

@@ -93,13 +93,20 @@ class Auth {
         const department = document.getElementById('register-department').value;
         const password = document.getElementById('register-password').value;
         
-        const response = await api.register({
+        const userData = {
           email,
           firstName,
           lastName,
           department,
           password
+        };
+        
+        console.log('Attempting registration with data:', {
+          ...userData,
+          password: '***' // Don't log actual password
         });
+        
+        const response = await api.register(userData);
         
         // Save token and user data
         this.setSession(response.token, response.user);

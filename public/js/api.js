@@ -41,10 +41,29 @@ class API {
       }
 
       const response = await fetch(url, options);
-      const responseData = await response.json();
+      
+      let responseData;
+      try {
+        responseData = await response.json();
+      } catch (parseError) {
+        console.error('Failed to parse response as JSON:', parseError);
+        throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+      }
 
       if (!response.ok) {
-        throw new Error(responseData.message || 'Something went wrong');
+        console.error('API Error Response:', {
+          status: response.status,
+          statusText: response.statusText,
+          data: responseData
+        });
+        
+        // Show validation errors if they exist
+        if (responseData.errors) {
+          const errorMessages = responseData.errors.map(err => err.msg).join(', ');
+          throw new Error(`Validation failed: ${errorMessages}`);
+        }
+        
+        throw new Error(responseData.message || `Server error: ${response.status}`);
       }
 
       return responseData;
