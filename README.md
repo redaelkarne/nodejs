@@ -1,52 +1,52 @@
-## Laboratory Equipment Reservation System
+## Système de Réservation d'Équipement de Laboratoire
 
-A web application for managing laboratory equipment reservations with user authentication and admin functionalities.
+Une application web pour gérer les réservations d'équipement de laboratoire avec authentification utilisateur et fonctionnalités d'administration.
 
-## Features
+## Fonctionnalités
 
-1. **Authentication & User Management**
-   - User registration and login
-   - JWT-based authentication
-   - Password reset functionality
-   - User roles (Admin and User)
+1. **Authentification et Gestion des Utilisateurs**
+   - Inscription et connexion des utilisateurs
+   - Authentification basée sur JWT
+   - Fonctionnalité de réinitialisation de mot de passe
+   - Rôles d'utilisateur (Administrateur et Utilisateur)
 
-2. **Equipment Management**
-   - Add, update, and delete equipment
-   - Equipment details: name, description, serial number, photo, status
-   - Equipment categories
+2. **Gestion d'Équipement**
+   - Ajouter, mettre à jour et supprimer des équipements
+   - Détails de l'équipement : nom, description, numéro de série, photo, statut
+   - Catégories d'équipement
 
-3. **Reservation System**
-   - Request equipment reservations
-   - Admin approval workflow
-   - Return process management
-   - Conflict detection
+3. **Système de Réservation**
+   - Demander des réservations d'équipement
+   - Flux de travail d'approbation administrateur
+   - Gestion du processus de retour
+   - Détection de conflits
 
-4. **Email Notifications**
-   - Registration confirmation
-   - Reservation status updates
-   - Return reminders
-   - Password reset
+4. **Notifications par Email**
+   - Confirmation d'inscription
+   - Mises à jour du statut de réservation
+   - Rappels de retour
+   - Réinitialisation de mot de passe
 
-## Technologies Used
+## Technologies Utilisées
 
 - **Backend**: Node.js, Express.js
-- **Database**: MongoDB with Mongoose
-- **Authentication**: JWT (JSON Web Tokens)
+- **Base de données**: MongoDB avec Mongoose
+- **Authentification**: JWT (JSON Web Tokens)
 - **Email**: Nodemailer
-- **File Uploads**: Multer
+- **Téléchargement de fichiers**: Multer
 - **Validation**: Express-validator
 
-## Setup
+## Configuration
 
-1. **Clone the repository**
+1. **Cloner le dépôt**
 
-2. **Install dependencies**
+2. **Installer les dépendances**
    ```
    npm install
    ```
 
-3. **Configure environment variables**
-   Create a `.env` file in the root directory with the following variables:
+3. **Configurer les variables d'environnement**
+   Créez un fichier `.env` dans le répertoire racine avec les variables suivantes :
    ```
    PORT=3000
    MONGODB_URI=mongodb://localhost:27017/lab-equipment
@@ -58,52 +58,49 @@ A web application for managing laboratory equipment reservations with user authe
    NODE_ENV=development
    ```
 
-4. **Start MongoDB**
-   Make sure MongoDB is running on your machine or use MongoDB Atlas.
+4. **Démarrer MongoDB**
+   Assurez-vous que MongoDB fonctionne sur votre machine ou utilisez MongoDB Atlas.
 
-5. **Run the application**
-   - Development mode:
+5. **Exécuter l'application**
+   - Mode développement :
      ```
      npm run dev
      ```
-   - Production mode:
+   - Mode production :
      ```
      npm start
      ```
 
-## API Endpoints
+## Points de Terminaison API
 
-### Authentication
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login and get token
-- `GET /api/auth/me` - Get current user info
-- `POST /api/auth/forgot-password` - Request password reset
-- `POST /api/auth/reset-password` - Reset password
+### Authentification
+- `POST /api/auth/register` - Inscrire un nouvel utilisateur
+- `POST /api/auth/login` - Se connecter et obtenir un token
+- `GET /api/auth/me` - Obtenir les informations de l'utilisateur actuel
+- `POST /api/auth/forgot-password` - Demander une réinitialisation de mot de passe
+- `POST /api/auth/reset-password` - Réinitialiser le mot de passe
 
-### Users
-- `GET /api/users` - Get all users (Admin only)
-- `GET /api/users/:id` - Get user by ID
-- `PUT /api/users/:id` - Update user
-- `DELETE /api/users/:id` - Delete user (Admin only)
-- `PUT /api/users/:id/change-password` - Change password
+### Utilisateurs
+- `GET /api/users` - Obtenir tous les utilisateurs (Administrateur uniquement)
+- `GET /api/users/:id` - Obtenir un utilisateur par ID
+- `PUT /api/users/:id` - Mettre à jour un utilisateur
+- `DELETE /api/users/:id` - Supprimer un utilisateur (Administrateur uniquement)
+- `PUT /api/users/:id/change-password` - Changer le mot de passe
 
-### Equipment
-- `GET /api/equipment` - Get all equipment
-- `GET /api/equipment/categories` - Get equipment categories
-- `GET /api/equipment/:id` - Get equipment by ID
-- `POST /api/equipment` - Create equipment (Admin only)
-- `PUT /api/equipment/:id` - Update equipment (Admin only)
-- `DELETE /api/equipment/:id` - Delete equipment (Admin only)
+### Équipement
+- `GET /api/equipment` - Obtenir tout l'équipement
+- `GET /api/equipment/categories` - Obtenir les catégories d'équipement
+- `GET /api/equipment/:id` - Obtenir un équipement par ID
+- `POST /api/equipment` - Créer un équipement (Administrateur uniquement)
+- `PUT /api/equipment/:id` - Mettre à jour un équipement (Administrateur uniquement)
+- `DELETE /api/equipment/:id` - Supprimer un équipement (Administrateur uniquement)
 
-### Reservations
-- `GET /api/reservations` - Get all reservations
-- `GET /api/reservations/statistics` - Get reservation statistics (Admin only)
-- `GET /api/reservations/:id` - Get reservation by ID
-- `POST /api/reservations` - Create a new reservation
-- `PUT /api/reservations/:id/status` - Update reservation status (Admin only)
-- `PUT /api/reservations/:id/return` - Return equipment
-- `PUT /api/reservations/:id/cancel` - Cancel reservation
+### Réservations
+- `GET /api/reservations` - Obtenir toutes les réservations
+- `GET /api/reservations/statistics` - Obtenir les statistiques de réservation (Administrateur uniquement)
+- `GET /api/reservations/:id` - Obtenir une réservation par ID
+- `POST /api/reservations` - Créer une nouvelle réservation
+- `PUT /api/reservations/:id/status` - Mettre à jour le statut de réservation (Administrateur uniquement)
+- `PUT /api/reservations/:id/return` - Retourner l'équipement
+- `PUT /api/reservations/:id/cancel` - Annuler la réservation
 
-## License
-
-This project is licensed under the ISC License.
