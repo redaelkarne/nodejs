@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratory Equipment Reservation System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header>
+      <div class="container header-container">
+        <h1><i class="fas fa-flask"></i> Lab Equipment Reservation</h1>
+        <nav id="user-nav">
+          <!-- This will be populated by JavaScript -->
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <div class="container" id="main-container">
+        <!-- This will be populated by JavaScript -->
+        <div id="login-form" class="auth-form">
+          <h2>Login</h2>
+          <form id="login">
+            <div class="form-group">
+              <label for="login-email">Email</label>
+              <input type="email" id="login-email" required>
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+          <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
+          <p><a href="#" id="show-forgot-password">Forgot Password?</a></p>
+        </div>
+
+        <div id="register-form" class="auth-form hidden">
+          <h2>Register</h2>
+          <form id="register">
+            <div class="form-group">
+              <label for="register-email">Email</label>
+              <input type="email" id="register-email" required>
+            </div>
+            <div class="form-group">
+              <label for="register-first-name">First Name</label>
+              <input type="text" id="register-first-name" required>
+            </div>
+            <div class="form-group">
+              <label for="register-last-name">Last Name</label>
+              <input type="text" id="register-last-name" required>
+            </div>
+            <div class="form-group">
+              <label for="register-department">Department</label>
+              <input type="text" id="register-department" required>
+            </div>
+            <div class="form-group">
+              <label for="register-password">Password</label>
+              <input type="password" id="register-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+          </form>
+          <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+        </div>
+
+        <div id="forgot-password-form" class="auth-form hidden">
+          <h2>Forgot Password</h2>
+          <form id="forgot-password">
+            <div class="form-group">
+              <label for="forgot-email">Email</label>
+              <input type="email" id="forgot-email" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Reset Link</button>
+          </form>
+          <p><a href="#" id="back-to-login">Back to Login</a></p>
+        </div>
+
+        <div id="dashboard" class="hidden">
+          <div class="dashboard-nav">
+            <button class="tab-btn active" data-tab="equipment">Equipment</button>
+            <button class="tab-btn" data-tab="reservations">My Reservations</button>
+            <button class="tab-btn admin-only" data-tab="manage-users">Manage Users</button>
+            <button class="tab-btn admin-only" data-tab="manage-equipment">Manage Equipment</button>
+            <button class="tab-btn admin-only" data-tab="manage-reservations">All Reservations</button>
+          </div>
+
+          <div id="equipment-tab" class="tab-content">
+            <h2>Available Equipment</h2>
+            <div class="filter-bar">
+              <input type="text" id="equipment-search" placeholder="Search equipment...">
+              <select id="category-filter">
+                <option value="">All Categories</option>
+                <!-- Categories will be populated by JavaScript -->
+              </select>
+              <select id="status-filter">
+                <option value="">All Status</option>
+                <option value="available">Available</option>
+                <option value="reserved">Reserved</option>
+                <option value="maintenance">Maintenance</option>
+              </select>
+            </div>
+            <div id="equipment-list" class="grid-container">
+              <!-- Equipment cards will be populated by JavaScript -->
+            </div>
+            <div class="pagination" id="equipment-pagination">
+              <!-- Pagination will be populated by JavaScript -->
+            </div>
+          </div>
+
+          <div id="reservations-tab" class="tab-content hidden">
+            <h2>My Reservations</h2>
+            <div class="filter-bar">
+              <select id="reservation-status-filter">
+                <option value="">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="returned">Returned</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div id="reservations-list" class="list-container">
+              <!-- Reservation items will be populated by JavaScript -->
+            </div>
+          </div>
+
+          <div id="manage-users-tab" class="tab-content hidden admin-only">
+            <h2>Manage Users</h2>
+            <div class="filter-bar">
+              <input type="text" id="user-search" placeholder="Search users...">
+            </div>
+            <div id="users-list" class="list-container">
+              <!-- User items will be populated by JavaScript -->
+            </div>
+          </div>
+
+          <div id="manage-equipment-tab" class="tab-content hidden admin-only">
+            <h2>Manage Equipment</h2>
+            <button id="add-equipment-btn" class="btn btn-primary">Add New Equipment</button>
+            <div id="admin-equipment-list" class="list-container">
+              <!-- Equipment items will be populated by JavaScript -->
+            </div>
+          </div>
+
+          <div id="manage-reservations-tab" class="tab-content hidden admin-only">
+            <h2>All Reservations</h2>
+            <div class="filter-bar">
+              <select id="admin-reservation-status-filter">
+                <option value="">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="returned">Returned</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+              <input type="text" id="reservation-user-search" placeholder="Search by user...">
+            </div>
+            <div id="admin-reservations-list" class="list-container">
+              <!-- Reservation items will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Equipment Detail Modal -->
+        <div id="equipment-modal" class="modal hidden">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="equipment-detail">
+              <!-- Equipment details will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Reservation Form Modal -->
+        <div id="reservation-modal" class="modal hidden">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Reserve Equipment</h2>
+            <form id="reservation-form">
+              <div class="form-group">
+                <label for="reservation-equipment">Equipment</label>
+                <input type="text" id="reservation-equipment" disabled>
+                <input type="hidden" id="reservation-equipment-id">
+              </div>
+              <div class="form-group">
+                <label for="reservation-start-date">Start Date</label>
+                <input type="date" id="reservation-start-date" required>
+              </div>
+              <div class="form-group">
+                <label for="reservation-end-date">End Date</label>
+                <input type="date" id="reservation-end-date" required>
+              </div>
+              <div class="form-group">
+                <label for="reservation-purpose">Purpose</label>
+                <textarea id="reservation-purpose" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit Request</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Equipment Form Modal (Add/Edit) -->
+        <div id="equipment-form-modal" class="modal hidden">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="equipment-form-title">Add New Equipment</h2>
+            <form id="equipment-form">
+              <input type="hidden" id="equipment-id">
+              <div class="form-group">
+                <label for="equipment-name">Name</label>
+                <input type="text" id="equipment-name" required>
+              </div>
+              <div class="form-group">
+                <label for="equipment-serial">Serial Number</label>
+                <input type="text" id="equipment-serial" required>
+              </div>
+              <div class="form-group">
+                <label for="equipment-category">Category</label>
+                <input type="text" id="equipment-category" required>
+              </div>
+              <div class="form-group">
+                <label for="equipment-description">Description</label>
+                <textarea id="equipment-description" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="equipment-location">Location</label>
+                <input type="text" id="equipment-location" required>
+              </div>
+              <div class="form-group">
+                <label for="equipment-condition">Condition</label>
+                <select id="equipment-condition" required>
+                  <option value="new">New</option>
+                  <option value="good">Good</option>
+                  <option value="fair">Fair</option>
+                  <option value="poor">Poor</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="equipment-status">Status</label>
+                <select id="equipment-status" required>
+                  <option value="available">Available</option>
+                  <option value="reserved">Reserved</option>
+                  <option value="maintenance">Maintenance</option>
+                  <option value="out-of-order">Out of Order</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="equipment-image">Image</label>
+                <input type="file" id="equipment-image" accept="image/*">
+              </div>
+              <button type="submit" class="btn btn-primary">Save Equipment</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Reservation Action Modal -->
+        <div id="reservation-action-modal" class="modal hidden">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="reservation-action-title">Reservation Action</h2>
+            <form id="reservation-action-form">
+              <input type="hidden" id="reservation-action-id">
+              <div class="form-group" id="action-status-group">
+                <label for="reservation-action-status">Status</label>
+                <select id="reservation-action-status" required>
+                  <option value="approved">Approve</option>
+                  <option value="rejected">Reject</option>
+                </select>
+              </div>
+              <div class="form-group" id="return-condition-group">
+                <label for="return-condition">Return Condition</label>
+                <select id="return-condition" required>
+                  <option value="good">Good</option>
+                  <option value="damaged">Damaged</option>
+                  <option value="lost">Lost</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="action-notes">Notes</label>
+                <textarea id="action-notes"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <p>&copy; 2025 Laboratory Equipment Reservation System</p>
+      </div>
+    </footer>
+
+    <!-- Notification Area -->
+    <div id="notification-container"></div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/equipment.js"></script>
+  <script src="js/reservations.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
